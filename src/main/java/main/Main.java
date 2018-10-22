@@ -117,7 +117,7 @@ public class Main {
         }
 
         try (PrintWriter out = new PrintWriter(outputSelectedGenes)) {
-            out.print(IDMappingSB.toString().trim());
+            out.print(selectedGenesSB.toString().trim());
         } catch (Exception e) {
 
             e.printStackTrace();

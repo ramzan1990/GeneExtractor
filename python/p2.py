@@ -1,5 +1,6 @@
 import h5py
 import numpy as np
+import sys
 
 filename = "abundance.h5"
 f = h5py.File(filename,'r')
@@ -34,8 +35,7 @@ with open("id_map.txt", "r") as ins:
 genesStep1 = []
 with open("out_step1.csv", "r") as ins:
     for line in ins:
-        genesStep1.append(line.strip)
-
+        genesStep1.append(line.strip())
 
 #calculate estimated counts and tpm for each gene
 IDValues = {}
