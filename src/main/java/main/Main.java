@@ -29,7 +29,6 @@ public class Main {
         String input2 = args[1];
         String outputMapping = args[2];
         String outputSelectedGenes = args[3];
-
         //parse the roh.txt file
         //map chromosomes to regions
         HashMap<String, ArrayList<int[]>> mapping = new HashMap<>();
@@ -38,7 +37,7 @@ public class Main {
                 try {
                     String[] values = line.split(":");
                     if (mapping.containsKey(values[0])) {
-                        //new chromosome
+                        //new chromosome case
                         mapping.get(values[0]).add(parseIntArray(values[1].split("-")));
 
                     } else {
