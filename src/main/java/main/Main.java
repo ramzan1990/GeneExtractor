@@ -55,22 +55,19 @@ public class Main {
                     int nEnd = Integer.parseInt(values[3]);
                     String nStrand = values[5];
                     String[] samples = values[11].split(",");
-                    //case when this is the first ever line read
-                    if (start == -1) {
+                    if (start == -1) { //case when this is the first ever line read
                         start = nStart;
                         end = nEnd;
                         chr = nChr;
                         strand = nStrand;
                         parseSamples(samplesList, samples);
-                        //case when the read can be continued
-                    } else if (nStart < end && nChr.equals(chr) && strand.equals(nStrand)) {
+                    } else if (nStart < end && nChr.equals(chr) && strand.equals(nStrand)) { //case when the read can be continued
                         //extending end
                         if (nEnd > end) {
                             end = nEnd;
                         }
                         parseSamples(samplesList, samples);
-                        //case when read is stopped and new one is started
-                    } else {
+                    } else { //case when read is stopped and new one is started
                         String junctionID = chr.substring(3) + ":" + start + ":" + end;
                         if (strand.equals("+")) {
                             junctionID += ":" + "1";
@@ -78,7 +75,7 @@ public class Main {
                             junctionID += ":" + "2";
                         }
                         for (Sample sample : samplesList) {
-                            String junctionIDWithCount = junctionID + ":" + sample.count;
+                            String junctionIDWithCount = junctionID + ":" + sample.count; //append sample count to constructed id
                             if (sampleJunctions.containsKey(sample.id)) {
                                 sampleJunctions.get(sample.id).add(junctionIDWithCount);
                             } else {
@@ -118,7 +115,7 @@ public class Main {
                 e.printStackTrace();
             }
             i++;
-            if(i>1){
+            if (i > 1) {
                 break;
             }
         }
