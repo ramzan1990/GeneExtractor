@@ -9,6 +9,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Stream;
@@ -19,8 +22,121 @@ public class Main {
 
     public static void main(String[] args) {
         //f2(new String[]{"11DG0268_SNP_Indel_ANNO.xlsx", "gene-symbol-ensembl-mapping.tsv", "out.txt"});
-        step1(new String[]{"roh.txt", "gencode.v19.annotation.gtf_withproteinids", "id_map.txt", "out_step1.csv"});
+        //step1(new String[]{"roh.txt", "gencode.v19.annotation.gtf_withproteinids", "id_map.txt", "out_step1.csv"});
         //step1(new String[]{"roh.txt", "gencode.v19.annotation.gtf_withproteinids", "out_step1.txt"}, false);
+        parseJunctions(new String[]{"C:\\Users\\Jumee\\Desktop\\junctions", "out_junctions.txt"});
+    }
+
+    public static void parseJunctions(String[] args) {
+        String input = args[0];
+        String output = args[1];
+        int start = -1;
+        int end = -1;
+        String chr = null;
+        String strand = null;
+        ArrayList<Sample> samplesList = new ArrayList<>();
+        HashMap<String, ArrayList<String>> sampleJunctions = new HashMap<>();
+        //Count number of lines in input to report progress
+        long lineCount = 0;
+        try {
+            Path path = Paths.get("C:\\Users\\Jumee\\Desktop\\junctions");
+            lineCount = Files.lines(path).count();
+        } catch (Exception e) {
+        }
+        double pr = -1;
+        int l = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(input))) {
+            for (String line; (line = br.readLine()) != null; ) {
+                try {
+                    //get values from a line
+                    String[] values = line.split("\t");
+                    String nChr = values[1];
+                    int nStart = Integer.parseInt(values[2]);
+                    int nEnd = Integer.parseInt(values[3]);
+                    String nStrand = values[5];
+                    String[] samples = values[11].split(",");
+                    //case when this is the first ever line read
+                    if (start == -1) {
+                        start = nStart;
+                        end = nEnd;
+                        chr = nChr;
+                        strand = nStrand;
+                        parseSamples(samplesList, samples);
+                        //case when the read can be continued
+                    } else if (nStart < end && nChr.equals(chr) && strand.equals(nStrand)) {
+                        //extending end
+                        if (nEnd > end) {
+                            end = nEnd;
+                        }
+                        parseSamples(samplesList, samples);
+                        //case when read is stopped and new one is started
+                    } else {
+                        String junctionID = chr.substring(3) + ":" + start + ":" + end;
+                        if (strand.equals("+")) {
+                            junctionID += ":" + "1";
+                        } else {
+                            junctionID += ":" + "2";
+                        }
+                        for (Sample sample : samplesList) {
+                            String junctionIDWithCount = junctionID + ":" + sample.count;
+                            if (sampleJunctions.containsKey(sample.id)) {
+                                sampleJunctions.get(sample.id).add(junctionIDWithCount);
+                            } else {
+                                ArrayList<String> idList = new ArrayList<>();
+                                idList.add(junctionIDWithCount);
+                                sampleJunctions.put(sample.id, idList);
+                            }
+                        }
+                        samplesList.clear();
+                        parseSamples(samplesList, samples);
+                        chr = nChr;
+                        strand = nStrand;
+                        start = nStart;
+                        end = nEnd;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                l++;
+                double r = Math.round(((double) l / lineCount) * 100) / 100.0;
+                if (r % 0.05 == 0 && pr != r) {
+                    System.out.print((int) (r * 100) + "%   ");
+                    pr = r;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //Save results for first 2 samples
+        int i = 0;
+        for (ArrayList<String> values : sampleJunctions.values()) {
+            try (PrintWriter out = new PrintWriter("out_junctions" + i + ".txt")) {
+                for (String s : values) {
+                    out.println(s);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            i++;
+            if(i>1){
+                break;
+            }
+        }
+    }
+
+    private static void parseSamples(ArrayList<Sample> samplesList, String[] samples) {
+        for (String sample : samples) {
+            if (sample.trim().length() <= 0) {
+                continue;
+            }
+            int count = Integer.parseInt(sample.split(":")[1]);
+            String id = sample.split(":")[0];
+            if (samplesList.contains(new Sample(id))) {
+                samplesList.get(samplesList.indexOf(new Sample(id))).count += count;
+            } else {
+                samplesList.add(new Sample(id, count));
+            }
+        }
     }
 
     public static void step1(String[] args) {
