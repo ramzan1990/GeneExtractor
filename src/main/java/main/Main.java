@@ -5,10 +5,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,25 +21,29 @@ public class Main {
         //f2(new String[]{"11DG0268_SNP_Indel_ANNO.xlsx", "gene-symbol-ensembl-mapping.tsv", "out.txt"});
         //step1(new String[]{"roh.txt", "gencode.v19.annotation.gtf_withproteinids", "id_map.txt", "out_step1.csv"});
         //step1(new String[]{"roh.txt", "gencode.v19.annotation.gtf_withproteinids", "out_step1.txt"}, false);
-        parseJunctions(new String[]{"C:\\Users\\Jumee\\Desktop\\junctions", "out_junctions.txt"});
+        parseJunctions(new String[]{"junctions", "out_junctions"});
     }
 
     public static void parseJunctions(String[] args) {
         String input = args[0];
         String output = args[1];
+        File directory = new File(output);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
         int start = -1;
         int end = -1;
         String chr = null;
         String strand = null;
         ArrayList<Sample> samplesList = new ArrayList<>();
-        HashMap<String, ArrayList<String>> sampleJunctions = new HashMap<>();
         //Count number of lines in input to report progress
         long lineCount = 0;
         try {
-            Path path = Paths.get("C:\\Users\\Jumee\\Desktop\\junctions");
+            Path path = Paths.get(input);
             lineCount = Files.lines(path).count();
         } catch (Exception e) {
         }
+        System.out.println("Number of lines in input file: " + lineCount);
         double pr = -1;
         int l = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(input))) {
@@ -76,12 +77,11 @@ public class Main {
                         }
                         for (Sample sample : samplesList) {
                             String junctionIDWithCount = junctionID + ":" + sample.count; //append sample count to constructed id
-                            if (sampleJunctions.containsKey(sample.id)) {
-                                sampleJunctions.get(sample.id).add(junctionIDWithCount);
-                            } else {
-                                ArrayList<String> idList = new ArrayList<>();
-                                idList.add(junctionIDWithCount);
-                                sampleJunctions.put(sample.id, idList);
+                            try (PrintWriter out = new PrintWriter(new BufferedWriter
+                                    (new FileWriter(output + File.separator + sample.id, true)))) {
+                                out.println(junctionIDWithCount);
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
                         }
                         samplesList.clear();
@@ -103,21 +103,6 @@ public class Main {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        //Save results for first 2 samples
-        int i = 0;
-        for (ArrayList<String> values : sampleJunctions.values()) {
-            try (PrintWriter out = new PrintWriter("out_junctions" + i + ".txt")) {
-                for (String s : values) {
-                    out.println(s);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            i++;
-            if (i > 1) {
-                break;
-            }
         }
     }
 
