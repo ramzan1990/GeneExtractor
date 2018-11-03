@@ -77,6 +77,7 @@ public class Main {
                         }
                         for (Sample sample : samplesList) {
                             String junctionIDWithCount = junctionID + ":" + sample.count; //append sample count to constructed id
+                            //append junction ID to corresponding sample file
                             try (PrintWriter out = new PrintWriter(new BufferedWriter
                                     (new FileWriter(output + File.separator + sample.id, true)))) {
                                 out.println(junctionIDWithCount);
@@ -114,6 +115,7 @@ public class Main {
             int count = Integer.parseInt(sample.split(":")[1]);
             String id = sample.split(":")[0];
             if (samplesList.contains(new Sample(id))) {
+                //Not sure if this is right
                 samplesList.get(samplesList.indexOf(new Sample(id))).count += count;
             } else {
                 samplesList.add(new Sample(id, count));
