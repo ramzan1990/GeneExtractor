@@ -21,7 +21,83 @@ public class Main {
         //f2(new String[]{"11DG0268_SNP_Indel_ANNO.xlsx", "gene-symbol-ensembl-mapping.tsv", "out.txt"});
         //step1(new String[]{"roh.txt", "gencode.v19.annotation.gtf_withproteinids", "id_map.txt", "out_step1.csv"});
         //step1(new String[]{"roh.txt", "gencode.v19.annotation.gtf_withproteinids", "out_step1.txt"}, false);
-        parseJunctions(new String[]{"junctions", "out_junctions"});
+        checkAndSplitJunctions(new String[]{"junctions"});
+        //parseJunctions(new String[]{"junctions", "out_junctions"});
+    }
+
+    private static void checkAndSplitJunctions(String[] args) {
+        String input = args[0];
+        //Count number of lines in input to report progress
+        long lineCount = 0;
+        try {
+            Path path = Paths.get(input);
+            lineCount = Files.lines(path).count();
+        } catch (Exception e) {
+        }
+        System.out.println("Number of lines in input file: " + lineCount);
+        int pr = -1;
+        int l = 0;
+        int start = -1;
+        String chr = null;
+        String strand = null;
+        String entry = null;
+        try {
+            new File("junctions+").delete();
+            new File("junctions-").delete();
+        } catch (Exception e) {
+            System.out.println("Cannot delete");
+        }
+        try (BufferedReader br = new BufferedReader(new FileReader(input))) {
+            for (String line; (line = br.readLine()) != null; ) {
+                try {
+                    //get values from a line
+                    String[] values = line.split("\t");
+                    String nChr = values[1];
+                    int nStart = Integer.parseInt(values[2]);
+                    String nStrand = values[5];
+                    try (PrintWriter out = new PrintWriter(new BufferedWriter
+                            (new FileWriter("junctions" + nStrand.trim(), true)))) {
+                        out.println(line);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (start == -1) { //case when this is the first ever line read
+                        start = nStart;
+                        chr = nChr;
+                        strand = nStrand;
+                        entry = line;
+                    } else {
+                        if (strand.equals(nStrand) && chr.equals(nChr) && nStart < start) {
+                            System.out.println("Not sorted (start)" + l);
+                            System.out.println(entry);
+                            System.out.println(line);
+                            System.out.println();
+                        }
+                        try {
+                            if (strand.equals(nStrand) && Integer.parseInt(chr.substring(3)) > Integer.parseInt(nChr.substring(3))) {
+                                System.out.println("Not sorted (chr)");
+                            }
+                        } catch (Exception e) {
+
+                        }
+                        chr = nChr;
+                        strand = nStrand;
+                        start = nStart;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                l++;
+                int r = (int) Math.round(((double) l / lineCount) * 100);
+                if (r % 5 == 0 && pr != r) {
+                    System.out.print(r + "%   ");
+                    pr = r;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println();
     }
 
     public static void parseJunctions(String[] args) {
@@ -44,7 +120,7 @@ public class Main {
         } catch (Exception e) {
         }
         System.out.println("Number of lines in input file: " + lineCount);
-        double pr = -1;
+        int pr = -1;
         int l = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(input))) {
             for (String line; (line = br.readLine()) != null; ) {
@@ -56,6 +132,8 @@ public class Main {
                     int nEnd = Integer.parseInt(values[3]);
                     String nStrand = values[5];
                     String[] samples = values[11].split(",");
+                    //used to deal with file ending
+                    boolean endOfCluster = l == lineCount - 1;
                     if (start == -1) { //case when this is the first ever line read
                         start = nStart;
                         end = nEnd;
@@ -69,6 +147,9 @@ public class Main {
                         }
                         parseSamples(samplesList, samples);
                     } else { //case when read is stopped and new one is started
+                        endOfCluster = true;
+                    }
+                    if (endOfCluster) {
                         String junctionID = chr.substring(3) + ":" + start + ":" + end;
                         if (strand.equals("+")) {
                             junctionID += ":" + "1";
@@ -96,15 +177,16 @@ public class Main {
                     e.printStackTrace();
                 }
                 l++;
-                double r = Math.round(((double) l / lineCount) * 100) / 100.0;
-                if (r % 0.05 == 0 && pr != r) {
-                    System.out.print((int) (r * 100) + "%   ");
+                int r = (int) Math.round(((double) l / lineCount) * 100);
+                if (r % 5 == 0 && pr != r) {
+                    System.out.print(r + "%   ");
                     pr = r;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println();
     }
 
     private static void parseSamples(ArrayList<Sample> samplesList, String[] samples) {
