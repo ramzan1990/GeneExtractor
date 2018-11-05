@@ -16,17 +16,25 @@ import java.util.stream.Stream;
 public class Main {
     public static final String MISSING = "missing";
     public static ArrayList<String> a1 = new ArrayList<>();
+    public static int cn = 0;
 
     public static void main(String[] args) {
         //f2(new String[]{"11DG0268_SNP_Indel_ANNO.xlsx", "gene-symbol-ensembl-mapping.tsv", "out.txt"});
         //step1(new String[]{"roh.txt", "gencode.v19.annotation.gtf_withproteinids", "id_map.txt", "out_step1.csv"});
         //step1(new String[]{"roh.txt", "gencode.v19.annotation.gtf_withproteinids", "out_step1.txt"}, false);
-        checkAndSplitJunctions(new String[]{"junctions"});
-        //parseJunctions(new String[]{"junctions", "out_junctions"});
+        //checkAndSplitJunctions(new String[]{"junctions", "junctions_s"});
+        parseJunctionsFolder(new String[]{"junctions_s", "junctions_o"});
+        //parseJunctions(new String[]{"junctions-", "out_junctions-"});
+        //parseJunctions(new String[]{"C:\\Users\\Jumee\\Desktop\\junctions", "out_junctions-"});
     }
 
     private static void checkAndSplitJunctions(String[] args) {
         String input = args[0];
+        String output = args[1];
+        File directory = new File(output);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
         //Count number of lines in input to report progress
         long lineCount = 0;
         try {
@@ -52,14 +60,16 @@ public class Main {
                 try {
                     //get values from a line
                     String[] values = line.split("\t");
-                    String nChr = values[1];
+                    String nChr = values[1].trim();
                     int nStart = Integer.parseInt(values[2]);
-                    String nStrand = values[5];
-                    try (PrintWriter out = new PrintWriter(new BufferedWriter
-                            (new FileWriter("junctions" + nStrand.trim(), true)))) {
-                        out.println(line);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    String nStrand = values[5].trim();
+                    if (isInteger(nChr.substring(3)) || nChr.toLowerCase().equals("chrx") || nChr.toLowerCase().equals("chry")) {
+                        try (PrintWriter out = new PrintWriter(new BufferedWriter
+                                (new FileWriter(output + File.separator + nChr + nStrand, true)))) {
+                            out.println(line);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                     if (start == -1) { //case when this is the first ever line read
                         start = nStart;
@@ -100,6 +110,30 @@ public class Main {
         System.out.println();
     }
 
+    public static void parseJunctionsFolder(String[] args) {
+        String input = args[0];
+        String output = args[1];
+        File directory = new File(output);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+        File dir = new File(input);
+        File[] directoryListing = dir.listFiles();
+        if (directoryListing != null) {
+            for (File child : directoryListing) {
+                if (child.getName().startsWith("chr")) {
+                    new Thread() {
+                        public void run() {
+                            parseJunctions(new String[]{child.getAbsolutePath(), output});
+
+                        }
+                    }.start();
+
+                }
+            }
+        }
+    }
+
     public static void parseJunctions(String[] args) {
         String input = args[0];
         String output = args[1];
@@ -107,10 +141,9 @@ public class Main {
         if (!directory.exists()) {
             directory.mkdirs();
         }
+        String chr = null;
         int start = -1;
         int end = -1;
-        String chr = null;
-        String strand = null;
         ArrayList<Sample> samplesList = new ArrayList<>();
         //Count number of lines in input to report progress
         long lineCount = 0;
@@ -119,7 +152,7 @@ public class Main {
             lineCount = Files.lines(path).count();
         } catch (Exception e) {
         }
-        System.out.println("Number of lines in input file: " + lineCount);
+        System.out.println("Number of lines in input file(" + input + "): " + lineCount);
         int pr = -1;
         int l = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(input))) {
@@ -128,50 +161,33 @@ public class Main {
                     //get values from a line
                     String[] values = line.split("\t");
                     String nChr = values[1];
+                    String nChrS = nChr.substring(3);
                     int nStart = Integer.parseInt(values[2]);
                     int nEnd = Integer.parseInt(values[3]);
-                    String nStrand = values[5];
                     String[] samples = values[11].split(",");
-                    //used to deal with file ending
-                    boolean endOfCluster = l == lineCount - 1;
+                    String junctionID = nChrS + ":" + nStart + ":" + nEnd;
                     if (start == -1) { //case when this is the first ever line read
                         start = nStart;
                         end = nEnd;
                         chr = nChr;
-                        strand = nStrand;
-                        parseSamples(samplesList, samples);
-                    } else if (nStart < end && nChr.equals(chr) && strand.equals(nStrand)) { //case when the read can be continued
+                        parseSamples(junctionID, samplesList, samples);
+                    } else if (nStart < end) { //case when the read can be continued
                         //extending end
                         if (nEnd > end) {
                             end = nEnd;
                         }
-                        parseSamples(samplesList, samples);
+                        parseSamples(junctionID, samplesList, samples);
                     } else { //case when read is stopped and new one is started
-                        endOfCluster = true;
-                    }
-                    if (endOfCluster) {
-                        String junctionID = chr.substring(3) + ":" + start + ":" + end;
-                        if (strand.equals("+")) {
-                            junctionID += ":" + "1";
-                        } else {
-                            junctionID += ":" + "2";
+                        cn++;
+                        if (cn % 10 == 0) {
+                            System.out.println(cn + "clusters added");
                         }
-                        for (Sample sample : samplesList) {
-                            String junctionIDWithCount = junctionID + ":" + sample.count; //append sample count to constructed id
-                            //append junction ID to corresponding sample file
-                            try (PrintWriter out = new PrintWriter(new BufferedWriter
-                                    (new FileWriter(output + File.separator + sample.id, true)))) {
-                                out.println(junctionIDWithCount);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
+                        saveSamples(chr + ":" + start + ":" + end, samplesList, output);
                         samplesList.clear();
-                        parseSamples(samplesList, samples);
-                        chr = nChr;
-                        strand = nStrand;
+                        parseSamples(junctionID, samplesList, samples);
                         start = nStart;
                         end = nEnd;
+                        chr = nChr;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -179,29 +195,45 @@ public class Main {
                 l++;
                 int r = (int) Math.round(((double) l / lineCount) * 100);
                 if (r % 5 == 0 && pr != r) {
-                    System.out.print(r + "%   ");
+                    System.out.println(r + "%   Complete");
                     pr = r;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //to deal with file ending
+        saveSamples(chr + ":" + start + ":" + end, samplesList, output);
         System.out.println();
     }
 
-    private static void parseSamples(ArrayList<Sample> samplesList, String[] samples) {
+    private static void saveSamples(String clusterID, ArrayList<Sample> samplesList, String output) {
+        for (Sample sample : samplesList) {
+            try (PrintWriter out = new PrintWriter(new BufferedWriter
+                    (new FileWriter(output + File.separator + sample.id, true)))) {
+                out.println(clusterID + "\t" + sample.toString() + "\t" + sample.count);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void parseSamples(String jid, ArrayList<Sample> samplesList, String[] samples) {
         for (String sample : samples) {
             if (sample.trim().length() <= 0) {
                 continue;
             }
             int count = Integer.parseInt(sample.split(":")[1]);
             String id = sample.split(":")[0];
+            Sample s;
             if (samplesList.contains(new Sample(id))) {
-                //Not sure if this is right
-                samplesList.get(samplesList.indexOf(new Sample(id))).count += count;
+                s = samplesList.get(samplesList.indexOf(new Sample(id)));
+                s.count += count;
             } else {
-                samplesList.add(new Sample(id, count));
+                s = new Sample(id, count);
+                samplesList.add(s);
             }
+            s.junctions.add(jid + ":" + count);
         }
     }
 
@@ -584,5 +616,16 @@ public class Main {
 
     static int[] parseIntArray(String[] arr) {
         return Stream.of(arr).mapToInt(Integer::parseInt).toArray();
+    }
+
+    public static boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            return false;
+        } catch (NullPointerException e) {
+            return false;
+        }
+        return true;
     }
 }
