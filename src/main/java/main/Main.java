@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 public class Main {
     public static final String MISSING = "missing";
     public static ArrayList<String> a1 = new ArrayList<>();
-    public static int cn = 0;
+    public static int cn = 0, maxCS = 0;
 
     public static void main(String[] args) {
         //f2(new String[]{"11DG0268_SNP_Indel_ANNO.xlsx", "gene-symbol-ensembl-mapping.tsv", "out.txt"});
@@ -143,7 +143,7 @@ public class Main {
         }
         String chr = null;
         int start = -1;
-        int end = -1;
+        int clusterEnd = -1;
         ArrayList<Sample> samplesList = new ArrayList<>();
         //Count number of lines in input to report progress
         long lineCount = 0;
@@ -155,47 +155,55 @@ public class Main {
         System.out.println("Number of lines in input file(" + input + "): " + lineCount);
         int pr = -1;
         int l = 0;
+        int cs = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(input))) {
             for (String line; (line = br.readLine()) != null; ) {
                 try {
                     //get values from a line
                     String[] values = line.split("\t");
-                    String nChr = values[1];
-                    String nChrS = nChr.substring(3);
-                    int nStart = Integer.parseInt(values[2]);
-                    int nEnd = Integer.parseInt(values[3]);
+                    String currentLineChr = values[1];
+                    int currentLineStart = Integer.parseInt(values[2]);
+                    int currentLineEnd = Integer.parseInt(values[3]);
                     String[] samples = values[11].split(",");
-                    String junctionID = nChrS + ":" + nStart + ":" + nEnd;
+                    String junctionID = currentLineChr.substring(3) + ":" + currentLineStart + ":" + currentLineEnd;
                     if (start == -1) { //case when this is the first ever line read
-                        start = nStart;
-                        end = nEnd;
-                        chr = nChr;
+                        start = currentLineStart;
+                        clusterEnd = currentLineEnd;
+                        chr = currentLineChr;
                         parseSamples(junctionID, samplesList, samples);
-                    } else if (nStart < end) { //case when the read can be continued
+                    } else if (currentLineStart < clusterEnd) { //case when the read can be continued
                         //extending end
-                        if (nEnd > end) {
-                            end = nEnd;
+                        if (currentLineEnd > clusterEnd) {
+                            clusterEnd = currentLineEnd;
                         }
                         parseSamples(junctionID, samplesList, samples);
+                        cs++;
+                        if(cs>maxCS){
+                            maxCS = cs;
+                            if(cs>5) {
+                                System.out.println("Max Cluster Size: " + cs);
+                            }
+                        }
                     } else { //case when read is stopped and new one is started
                         cn++;
                         if (cn % 10 == 0) {
                             System.out.println(cn + "clusters added");
                         }
-                        saveSamples(chr + ":" + start + ":" + end, samplesList, output);
+                        saveSamples(chr + ":" + start + ":" + clusterEnd, samplesList, output);
                         samplesList.clear();
                         parseSamples(junctionID, samplesList, samples);
-                        start = nStart;
-                        end = nEnd;
-                        chr = nChr;
+                        start = currentLineStart;
+                        clusterEnd = currentLineEnd;
+                        chr = currentLineChr;
+                        cs = 0;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 l++;
                 int r = (int) Math.round(((double) l / lineCount) * 100);
-                if (r % 5 == 0 && pr != r) {
-                    System.out.println(r + "%   Complete");
+                if (r % 10 == 0 && pr != r) {
+                    System.out.println(r + "%   Complete for " + input);
                     pr = r;
                 }
             }
@@ -203,7 +211,7 @@ public class Main {
             e.printStackTrace();
         }
         //to deal with file ending
-        saveSamples(chr + ":" + start + ":" + end, samplesList, output);
+        saveSamples(chr + ":" + start + ":" + clusterEnd, samplesList, output);
         System.out.println();
     }
 
