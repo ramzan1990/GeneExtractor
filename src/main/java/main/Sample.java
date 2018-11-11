@@ -8,13 +8,13 @@ public class Sample {
     public int count;
     public ArrayList<String> junctions;
 
-    public Sample(String id, int count){
+    public Sample(String id, int count) {
         this.id = id;
         this.count = count;
         junctions = new ArrayList<>();
     }
 
-    public Sample(String id){
+    public Sample(String id) {
         this.id = id;
     }
 
@@ -29,7 +29,11 @@ public class Sample {
         return this.id.equals(other.id);
     }
 
-    public String toString(){
-        return String.join(",", junctions);
+    public String toString() {
+        if (junctions.size() == 0) {
+            return "NA";
+        } else {
+            return String.join(",", junctions);
+        }
     }
 }
