@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="genome-coordinates-converter">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/genome-coordinates-converter.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,5 +1,10 @@
 package main;
 
+import com.dnastack.beacon.converter.liftover.api.LiftOver;
+import com.dnastack.beacon.converter.liftover.exception.LiftOverException;
+import com.dnastack.beacon.converter.liftover.ucsc.UCSCLiftOver;
+import com.dnastack.beacon.converter.util.GenomeBuild;
+import htsjdk.samtools.util.Interval;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -18,6 +23,7 @@ public class Main {
     public static final String MISSING = "missing";
     public static ArrayList<String> cList = new ArrayList<>();
     public static int cn = 0, maxCS = 0, minCount = 5;
+    public static HashMap<String, ArrayList<Region>> codingRegions = new HashMap<String, ArrayList<Region>>();
 
 
     public static void main(String[] args) {
@@ -25,17 +31,133 @@ public class Main {
         //step1(new String[]{"roh.txt", "gencode.v19.annotation.gtf_withproteinids", "id_map.txt", "out_step1.csv"});
         //step1(new String[]{"roh.txt", "gencode.v19.annotation.gtf_withproteinids", "out_step1.txt"}, false);
         if (args[0].equals("a")) {
+            parseGTF(new String[]{"gencode.v25.coding.genes.gtf"});
             checkAndSplitJunctions(new String[]{"junctions", "junctions_s"});
         } else if (args[0].equals("b")) {
             parseJunctionsFolder(new String[]{"junctions_s", "junctions_o"});
         } else if (args[0].equals("c")) {
+            File cdirectory = new File("clusters");
+            if (!cdirectory.exists()) {
+                cdirectory.mkdir();
+            }
             //parseJunctions(new String[]{"C:\\Users\\Jumee\\Desktop\\chr13-", "chr13-_output", "chr13-"});
             parseJunctions(new String[]{"junctions_s" + File.separator + "chr13-", "output13", "chr13-"});
             parseJunctions(new String[]{"junctions_s" + File.separator + "chr13+", "output13", "chr13+"});
+        } else if (args[0].equals("d")) {
+            convertXLSX(new String[]{"11DG0268_SNP_Indel_ANNO.xlsx", "11DG0268_SNP_Indel_ANNO_HG38.xlsx"});
+            convertTXT(new String[]{"roh.txt", "roh_HG38.txt"});
         }
 
         //parseJunctions(new String[]{"junctions-", "out_junctions-"});
         //parseJunctions(new String[]{"C:\\Users\\Jumee\\Desktop\\junctions", "out_junctions-"});
+    }
+
+    public static void convertTXT(String[] args) {
+        try {
+            LiftOver intervalLiftOver = new UCSCLiftOver(GenomeBuild.HG19, GenomeBuild.HG38);
+            String input = args[0];
+            String output = args[1];
+            StringBuilder sb = new StringBuilder();
+            try (BufferedReader br = new BufferedReader(new FileReader(input))) {
+                for (String line; (line = br.readLine()) != null; ) {
+                    try {
+                        String[] values = line.split(":");
+                        int[] r = parseIntArray(values[1].split("-"));
+                        Interval interval = new Interval(values[0], r[0], r[1]);
+                        Interval newInterval = intervalLiftOver.liftOver(interval, 0.91);
+                        sb.append(newInterval.getContig());
+                        sb.append(":");
+                        sb.append(newInterval.getStart());
+                        sb.append("-");
+                        sb.append(newInterval.getEnd());
+                        sb.append(System.lineSeparator());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try (PrintWriter out = new PrintWriter(new BufferedWriter
+                    (new FileWriter(output, false)))) {
+                out.print(sb.toString().trim());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void convertXLSX(String[] args) {
+        try {
+            int e = 0;
+            LiftOver intervalLiftOver = new UCSCLiftOver(GenomeBuild.HG19, GenomeBuild.HG38);
+            String input = args[0];
+            String output = args[1];
+            Workbook wb = WorkbookFactory.create(new File(input));
+            Sheet sheet = wb.getSheetAt(0);
+            Row row;
+            int rows = sheet.getPhysicalNumberOfRows();
+            for (int r = 1; r < rows; r++) {
+                row = sheet.getRow(r);
+                if (row != null) {
+                    try {
+                        String chr = row.getCell(0).getStringCellValue();
+                        chr = chr.replaceAll("chr0", "chr");
+                        int start = (int) row.getCell(1).getNumericCellValue();
+                        int end = (int) row.getCell(2).getNumericCellValue();
+                        Interval interval = new Interval(chr, start, end);
+                        Interval newInterval = intervalLiftOver.liftOver(interval, 0.91);
+                        row.getCell(1).setCellValue(newInterval.getStart());
+                        row.getCell(2).setCellValue(newInterval.getEnd());
+                    }catch (Exception ex){
+                        e++;
+                        //ex.printStackTrace();
+                    }
+                }
+            }
+            FileOutputStream out = new FileOutputStream(output);
+            wb.write(out);
+            out.close();
+            System.out.println("total rows not converted: " + e);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void parseGTF(String[] args) {
+        String input = args[0];
+        try (BufferedReader br = new BufferedReader(new FileReader(input))) {
+            for (String line; (line = br.readLine()) != null; ) {
+                try {
+                    //get values from a line
+                    String[] values = line.split("\t");
+                    String nChr = values[0].trim();
+                    int nStart = Integer.parseInt(values[3]);
+                    int nEnd = Integer.parseInt(values[4]);
+                    String nStrand = values[6].trim();
+                    String info = values[8];
+                    if (info.contains("protein_coding")) {
+                        Region nRegion = new Region(nStart, nEnd);
+                        if (codingRegions.containsKey(nChr + nStrand)) {
+                            codingRegions.get(nChr + nStrand).add(nRegion);
+                        } else {
+                            ArrayList<Region> rl = new ArrayList<>();
+                            rl.add(nRegion);
+                            codingRegions.put(nChr + nStrand, rl);
+                        }
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println();
     }
 
     private static void checkAndSplitJunctions(String[] args) {
@@ -53,18 +175,15 @@ public class Main {
         } catch (Exception e) {
         }
         System.out.println("Number of lines in input file: " + lineCount);
+        int sl = 0;
+        int sl13 = 0;
+        int al13 = 0;
         int pr = -1;
         int l = 0;
         int start = -1;
         String chr = null;
         String strand = null;
         String entry = null;
-        try {
-            new File("junctions+").delete();
-            new File("junctions-").delete();
-        } catch (Exception e) {
-            System.out.println("Cannot delete");
-        }
         try (BufferedReader br = new BufferedReader(new FileReader(input))) {
             for (String line; (line = br.readLine()) != null; ) {
                 try {
@@ -72,6 +191,8 @@ public class Main {
                     String[] values = line.split("\t");
                     String nChr = values[1].trim();
                     int nStart = Integer.parseInt(values[2]);
+                    int nEnd = Integer.parseInt(values[3]);
+                    Region nRegion = new Region(nStart, nEnd);
                     String nStrand = values[5].trim();
                     String[] samples = values[11].split(",");
 
@@ -91,11 +212,21 @@ public class Main {
                     String newLine = line.replace(values[11], nv.toString());
                     if (enoughCount) {
                         if (isInteger(nChr.substring(3)) || nChr.toLowerCase().equals("chrx") || nChr.toLowerCase().equals("chry")) {
-                            try (PrintWriter out = new PrintWriter(new BufferedWriter
-                                    (new FileWriter(output + File.separator + nChr + nStrand, true)))) {
-                                out.println(newLine);
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                            if (chr.equals("chr13")) {
+                                al13++;
+                            }
+                            if (nRegion.isContainedIn(codingRegions.get(nChr + nStrand))) {
+                                try (PrintWriter out = new PrintWriter(new BufferedWriter
+                                        (new FileWriter(output + File.separator + nChr + nStrand, true)))) {
+                                    out.println(newLine);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                sl++;
+                                if (chr.equals("chr13")) {
+                                    sl13++;
+                                }
                             }
                         }
                     }
@@ -135,7 +266,8 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println();
+        System.out.println("Total Removed lines " + sl);
+        System.out.println("Removed lines in chr13 " + sl13 + " out of " + al13);
     }
 
     public static void parseJunctionsFolder(String[] args) {
@@ -144,6 +276,10 @@ public class Main {
         File directory = new File(output);
         if (!directory.exists()) {
             directory.mkdir();
+        }
+        File cdirectory = new File("clusters");
+        if (!cdirectory.exists()) {
+            cdirectory.mkdir();
         }
         File dir = new File(input);
         File[] directoryListing = dir.listFiles();
@@ -222,7 +358,7 @@ public class Main {
                             if (commonRegionStart <= currentLineStart) {
                                 commonRegionStart = currentLineStart;
                             }
-                            if( commonRegionEnd >= currentLineEnd){
+                            if (commonRegionEnd >= currentLineEnd) {
                                 commonRegionEnd = currentLineEnd;
                             }
                             sb.append("----------------------------------------------------------------------------");
@@ -255,7 +391,7 @@ public class Main {
                         if (cn % 1000 == 0) {
                             // System.out.println(cn + "clusters added");
                         }
-                        String clusterID = chr.substring(3) + ":" + clusterStart + ":" + clusterEnd;
+                        String clusterID = chr.substring(3) + ":" + commonRegionStart + ":" + commonRegionEnd;
                         saveSamples(clusterID, samplesList, output);
                         if (!cList.contains(clusterID)) {
                             cList.add(clusterID);
@@ -290,7 +426,8 @@ public class Main {
             e.printStackTrace();
         }
         //to deal with file ending
-        saveSamples(chr + ":" + clusterStart + ":" + clusterEnd, samplesList, output);
+        String clusterID = chr.substring(3) + ":" + commonRegionStart + ":" + commonRegionEnd;
+        saveSamples(clusterID, samplesList, output);
         cn++;
         //double avg = 0;
         //for (Sample s : samplesList.values()) {
