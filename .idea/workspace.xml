@@ -7,20 +7,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="df366088-f55c-40f1-8f8a-d6fef2156e1d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/genome_coordinates_converter.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chains/hg17/hg17ToHg18.over.chain" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chains/hg17/hg17ToHg19.over.chain" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chains/hg18/hg18ToHg17.over.chain" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chains/hg18/hg18ToHg19.over.chain" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chains/hg18/hg18ToHg38.over.chain" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chains/hg19/hg19ToHg17.over.chain" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chains/hg19/hg19ToHg18.over.chain" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chains/hg19/hg19ToHg38.over.chain" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chains/hg38/hg38ToHg19.over.chain" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libs/genome-coordinates-converter.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/Region.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chr13+.tsv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/IO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/ge.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/ge.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/Region.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/Region.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/main/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/Main.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -40,52 +32,52 @@
     <session id="-142920792">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="29" />
+          <entry key="project.closed" value="33" />
           <entry key="project.open.time.0" value="3" />
           <entry key="project.open.time.1" value="6" />
-          <entry key="project.open.time.5" value="7" />
-          <entry key="project.open.time.6" value="11" />
-          <entry key="project.open.time.7" value="3" />
+          <entry key="project.open.time.5" value="9" />
+          <entry key="project.open.time.6" value="12" />
+          <entry key="project.open.time.7" value="5" />
           <entry key="project.open.time.8" value="2" />
-          <entry key="project.opened" value="32" />
+          <entry key="project.opened" value="37" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="chain" value="1" />
-          <entry key="class" value="7" />
+          <entry key="class" value="8" />
           <entry key="csv" value="10" />
           <entry key="gtf_withproteinids" value="2" />
-          <entry key="java" value="3" />
+          <entry key="java" value="11" />
           <entry key="py" value="2" />
-          <entry key="tsv" value="2" />
-          <entry key="txt" value="8" />
+          <entry key="tsv" value="7" />
+          <entry key="txt" value="10" />
           <entry key="xml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="CLASS" value="7" />
+          <entry key="CLASS" value="8" />
           <entry key="CSV" value="10" />
-          <entry key="JAVA" value="3" />
-          <entry key="PLAIN_TEXT" value="13" />
-          <entry key="TSV" value="2" />
+          <entry key="JAVA" value="11" />
+          <entry key="PLAIN_TEXT" value="15" />
+          <entry key="TSV" value="7" />
           <entry key="XML" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="class" value="2" />
-          <entry key="java" value="10490" />
-          <entry key="txt" value="28" />
+          <entry key="java" value="12692" />
+          <entry key="txt" value="29" />
           <entry key="xml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CLASS" value="2" />
-          <entry key="JAVA" value="10490" />
-          <entry key="PLAIN_TEXT" value="28" />
+          <entry key="JAVA" value="12692" />
+          <entry key="PLAIN_TEXT" value="29" />
           <entry key="XML" value="1" />
         </counts>
       </usages-collector>
@@ -96,63 +88,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/main/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="112" column="86" selection-start-line="112" selection-start-column="86" selection-end-line="112" selection-end-column="86" />
+            <state relative-caret-position="1833">
+              <caret line="476" column="44" selection-start-line="476" selection-start-column="44" selection-end-line="476" selection-end-column="44" />
               <folding>
-                <element signature="e#683#710#0" expanded="true" />
-                <element signature="e#38586#38587#0" expanded="true" />
-                <element signature="e#38661#38662#0" expanded="true" />
+                <element signature="e#39154#39155#0" expanded="true" />
+                <element signature="e#39229#39230#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/libs/genome-coordinates-converter.jar!/com/dnastack/beacon/converter/liftover/api/LiftOver.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/rohc.txt">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/roh.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="23" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/libs/genome-coordinates-converter.jar!/com/dnastack/beacon/converter/liftover/ucsc/UCSCLiftOver.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="71" column="59" selection-start-line="71" selection-start-column="59" selection-end-line="71" selection-end-column="59" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/libs/genome-coordinates-converter.jar!/com/dnastack/beacon/converter/liftover/ucsc/UCSChainFile.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="226">
-              <caret line="26" selection-start-line="26" selection-end-line="26" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/main/Region.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -160,8 +101,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/main/Sample.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="469">
-              <caret line="36" column="9" selection-start-line="36" selection-start-column="9" selection-end-line="36" selection-end-column="9" />
+            <state relative-caret-position="333">
+              <caret line="35" column="38" selection-start-line="35" selection-start-column="38" selection-end-line="35" selection-end-column="38" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#350#351#0" expanded="true" />
@@ -172,13 +113,33 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/python/id_map.txt">
-          <provider selected="true" editor-type-id="text-editor" />
+        <entry file="file://$PROJECT_DIR$/src/main/java/main/IO.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="384">
+              <caret line="31" column="52" selection-start-line="31" selection-start-column="52" selection-end-line="31" selection-end-column="52" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/python/p2.py">
-          <provider selected="true" editor-type-id="text-editor" />
+        <entry file="file://$PROJECT_DIR$/filtering/ch13+_2.tsv">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="12" column="60" selection-start-line="12" selection-start-column="60" selection-end-line="12" selection-end-column="60" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/main/Region.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="493">
+              <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
+            </state>
+          </provider>
         </entry>
       </file>
     </leaf>
@@ -194,6 +155,9 @@
     <findStrings>
       <find>out_step1</find>
       <find>roh</find>
+      <find>getnum</find>
+      <find>codingRegions</find>
+      <find>ROHMap</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -204,8 +168,9 @@
       <list>
         <option value="$PROJECT_DIR$/python/p.py" />
         <option value="$PROJECT_DIR$/src/main/java/main/Sample.java" />
-        <option value="$PROJECT_DIR$/src/main/java/main/Region.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/main/Region.java" />
+        <option value="$PROJECT_DIR$/src/main/java/main/IO.java" />
         <option value="$PROJECT_DIR$/src/main/java/main/Main.java" />
       </list>
     </option>
@@ -233,7 +198,6 @@
     </navigator>
     <panes>
       <pane id="AndroidView" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -244,7 +208,7 @@
             <path>
               <item name="GeneExtractor" type="b2602c69:ProjectViewProjectNode" />
               <item name="GeneExtractor" type="462c0819:PsiDirectoryNode" />
-              <item name="libs" type="462c0819:PsiDirectoryNode" />
+              <item name="filtering" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="GeneExtractor" type="b2602c69:ProjectViewProjectNode" />
@@ -254,36 +218,57 @@
             <path>
               <item name="GeneExtractor" type="b2602c69:ProjectViewProjectNode" />
               <item name="GeneExtractor" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-              <item name="artifacts" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="GeneExtractor" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GeneExtractor" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="GeneExtractor" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GeneExtractor" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="GeneExtractor" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GeneExtractor" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542120452115" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542398247931" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/genome-coordinates-converter.jar!/" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
   <component name="RecentsManager">
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="main" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Jumee\Dropbox\Work_Hiro\GeneExtractor\libs" />
-      <recent name="C:\Users\Jumee\Dropbox\Work_Hiro\GeneExtractor" />
-      <recent name="C:\Users\Jumee\Dropbox\Work_Hiro\GeneExtractor\python" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Jumee\Dropbox\Work_Hiro\GeneExtractor\python" />
       <recent name="C:\Users\Jumee\Dropbox\Work_Hiro\GeneExtractor" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Jumee\Dropbox\Work_Hiro\GeneExtractor" />
+      <recent name="C:\Users\Jumee\Dropbox\Work_Hiro\GeneExtractor\libs" />
+      <recent name="C:\Users\Jumee\Dropbox\Work_Hiro\GeneExtractor\python" />
+    </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="main" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -302,7 +287,7 @@
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="main.Main" />
       <module name="GeneExtractor" />
-      <option name="PROGRAM_PARAMETERS" value="d" />
+      <option name="PROGRAM_PARAMETERS" value="e" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="main.*" />
@@ -428,13 +413,21 @@
       <option name="project" value="LOCAL" />
       <updated>1541933537539</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="m 8">
+      <created>1542120571315</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1542120571315</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2553305" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26865673" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -443,13 +436,13 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49946696" weight="0.32936078" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49573562" visible="true" weight="0.32936078" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49573562" weight="0.3997833" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4936034" weight="0.32936078" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4936034" visible="true" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5042644" side_tool="true" visible="true" weight="0.32936078" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5063966" side_tool="true" visible="true" weight="0.3997833" />
       <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" sideWeight="0.49946696" weight="0.32936078" />
       <window_info anchor="bottom" id="Messages" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -484,17 +477,12 @@
     <MESSAGE value="m 5" />
     <MESSAGE value="m 6" />
     <MESSAGE value="m 7" />
-    <option name="LAST_COMMIT_MESSAGE" value="m 7" />
+    <MESSAGE value="m 8" />
+    <option name="LAST_COMMIT_MESSAGE" value="m 8" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>jar://$PROJECT_DIR$/libs/genome-coordinates-converter.jar!/com/dnastack/beacon/converter/liftover/ucsc/UCSChainFile.class</url>
-          <line>51</line>
-          <properties />
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>jar://$PROJECT_DIR$/libs/genome-coordinates-converter.jar!/com/dnastack/beacon/converter/liftover/ucsc/UCSCLiftOver.class</url>
           <line>37</line>
@@ -503,7 +491,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/main/Main.java</url>
-          <line>74</line>
+          <line>100</line>
           <properties />
           <option name="timeStamp" value="29" />
         </line-breakpoint>
@@ -513,47 +501,47 @@
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
       <expression>
-        <expression-string>newInterval.contig</expression-string>
+        <expression-string>sb.toString().split(System.getProperty(&quot;line.separator&quot;)).length</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>newInterval.end</expression-string>
+        <expression-string>r.isContainedIn(ROHMap.get(chrFile))</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>newInterval.name</expression-string>
+        <expression-string>ROHMap.get(chrFile)</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>newInterval.getName()</expression-string>
+        <expression-string>row.getCell(17).getNumericCellValue()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>intervalLiftOver.liftOver(interval)</expression-string>
+        <expression-string>row.getCell(17).getStringCellValue()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>intervalLiftOver.liftOver(&quot;chr1&quot;,92240685 ,74185207)</expression-string>
+        <expression-string>row.getCell(17)</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>intervalLiftOver.liftOver(&quot;chr1&quot;,90775629 ,90774972)</expression-string>
+        <expression-string>ROHMap.keySet.contains(&quot;chr1&quot;)</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>intervalLiftOver.liftOver(&quot;chr1&quot;,90774972,90775629)</expression-string>
+        <expression-string>ROHMap.get(values[0])</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>intervalLiftOver.liftOver(&quot;chr1&quot;,14907,14907)</expression-string>
+        <expression-string>values[0]</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
@@ -625,39 +613,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/main/Sample.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="469">
-          <caret line="36" column="9" selection-start-line="36" selection-start-column="9" selection-end-line="36" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#350#351#0" expanded="true" />
-            <element signature="e#378#379#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/main/Region.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/chains/hg17/hg17ToHg18.over.chain">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libs/genome-coordinates-converter.jar!/com/dnastack/beacon/converter/liftover/ucsc/UCSChainFile.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="26" selection-start-line="26" selection-end-line="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python/id_map.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/python/p2.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/roh.txt">
@@ -667,31 +623,96 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rohc.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="jar://$PROJECT_DIR$/libs/genome-coordinates-converter.jar!/com/dnastack/beacon/converter/liftover/ucsc/UCSCLiftOver.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
+        <state relative-caret-position="1071">
           <caret line="71" column="59" selection-start-line="71" selection-start-column="59" selection-end-line="71" selection-end-column="59" />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/python/id_map.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/python/p2.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="jar://$PROJECT_DIR$/libs/genome-coordinates-converter.jar!/com/dnastack/beacon/converter/liftover/api/LiftOver.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+        <state relative-caret-position="255">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rohc.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/chr13+.tsv">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/main/Region.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/libs/genome-coordinates-converter.jar!/com/dnastack/beacon/converter/liftover/ucsc/UCSChainFile.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="51" selection-start-line="51" selection-end-line="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/filtering/ch13+_2.tsv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="60" selection-start-line="12" selection-start-column="60" selection-end-line="12" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.base/java/lang/String.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="2426" column="25" selection-start-line="2426" selection-start-column="25" selection-end-line="2426" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.base/java/lang/StringBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="412" column="18" selection-start-line="412" selection-start-column="18" selection-end-line="412" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/main/IO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="31" column="52" selection-start-line="31" selection-start-column="52" selection-end-line="31" selection-end-column="52" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/main/Sample.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="333">
+          <caret line="35" column="38" selection-start-line="35" selection-start-column="38" selection-end-line="35" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#350#351#0" expanded="true" />
+            <element signature="e#378#379#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/main/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="112" column="86" selection-start-line="112" selection-start-column="86" selection-end-line="112" selection-end-column="86" />
+        <state relative-caret-position="1833">
+          <caret line="476" column="44" selection-start-line="476" selection-start-column="44" selection-end-line="476" selection-end-column="44" />
           <folding>
-            <element signature="e#683#710#0" expanded="true" />
-            <element signature="e#38586#38587#0" expanded="true" />
-            <element signature="e#38661#38662#0" expanded="true" />
+            <element signature="e#39154#39155#0" expanded="true" />
+            <element signature="e#39229#39230#0" expanded="true" />
           </folding>
         </state>
       </provider>

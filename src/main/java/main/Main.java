@@ -5,10 +5,9 @@ import com.dnastack.beacon.converter.liftover.exception.LiftOverException;
 import com.dnastack.beacon.converter.liftover.ucsc.UCSCLiftOver;
 import com.dnastack.beacon.converter.util.GenomeBuild;
 import htsjdk.samtools.util.Interval;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -17,19 +16,40 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Stream;
 
 public class Main {
     public static final String MISSING = "missing";
     public static ArrayList<String> cList = new ArrayList<>();
     public static int cn = 0, maxCS = 0, minCount = 5;
-    public static HashMap<String, ArrayList<Region>> codingRegions = new HashMap<String, ArrayList<Region>>();
+    public static HashMap<String, ArrayList<Region>> codingRegions = new HashMap<>();
+    public static HashMap<String, ArrayList<Region>> ROHMap = new HashMap<>();
+    public static HashMap<String, ArrayList<Integer>> unannotatedVariants = new HashMap<>();
+    public static HashMap<String, ArrayList<Integer>> alleleFrequency = new HashMap<>();
+    private static int tchr48 = 0;
+    private static ExecutorService pool;
 
 
     public static void main(String[] args) {
         //f2(new String[]{"11DG0268_SNP_Indel_ANNO.xlsx", "gene-symbol-ensembl-mapping.tsv", "out.txt"});
         //step1(new String[]{"roh.txt", "gencode.v19.annotation.gtf_withproteinids", "id_map.txt", "out_step1.csv"});
         //step1(new String[]{"roh.txt", "gencode.v19.annotation.gtf_withproteinids", "out_step1.txt"}, false);
+        for (int i = 1; i < 23; i++) {
+            ROHMap.put("chr" + i, new ArrayList<>());
+            alleleFrequency.put("chr" + i, new ArrayList<>());
+            unannotatedVariants.put("chr" + i, new ArrayList<>());
+        }
+        ROHMap.put("chrX", new ArrayList<>());
+        alleleFrequency.put("chrX", new ArrayList<>());
+        unannotatedVariants.put("chrX", new ArrayList<>());
+
+        ROHMap.put("chrY", new ArrayList<>());
+        alleleFrequency.put("chrY", new ArrayList<>());
+        unannotatedVariants.put("chrY", new ArrayList<>());
+
         if (args[0].equals("a")) {
             parseGTF(new String[]{"gencode.v25.coding.genes.gtf"});
             checkAndSplitJunctions(new String[]{"junctions", "junctions_s"});
@@ -46,6 +66,12 @@ public class Main {
         } else if (args[0].equals("d")) {
             convertXLSX(new String[]{"11DG0268_SNP_Indel_ANNO.xlsx", "11DG0268_SNP_Indel_ANNO_HG38.xlsx"});
             convertTXT(new String[]{"roh.txt", "roh_HG38.txt"});
+        } else if (args[0].equals("e")) {
+            parseROH("roh_HG38.txt");
+            parseExcelForFiltering(new String[]{"11DG0268_SNP_Indel_ANNO_HG38.xlsx"});
+            parseJunctions2(new String[]{"chr13+.tsv", "filtering" + File.separator + "ch13+_0.tsv", "chr13", "0"});
+            parseJunctions2(new String[]{"filtering" + File.separator + "ch13+_0.tsv", "filtering" + File.separator + "ch13+_1.tsv", "chr13", "1"});
+            parseJunctions2(new String[]{"filtering" + File.separator + "ch13+_1.tsv", "filtering" + File.separator + "ch13+_2.tsv", "chr13", "2"});
         }
 
         //parseJunctions(new String[]{"junctions-", "out_junctions-"});
@@ -113,9 +139,22 @@ public class Main {
                         Interval newInterval = intervalLiftOver.liftOver(interval, 0.91);
                         row.getCell(1).setCellValue(newInterval.getStart());
                         row.getCell(2).setCellValue(newInterval.getEnd());
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         e++;
-                        //ex.printStackTrace();
+                        CellStyle style = wb.createCellStyle();
+                        style.setFillForegroundColor(IndexedColors.RED.getIndex());
+                        style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+                        Cell cell = row.getCell(18);
+                        if (cell == null) {
+                            cell = row.createCell(18);
+                        }
+                        cell.setCellType(Cell.CELL_TYPE_STRING);
+                        cell.setCellValue("error");
+                        Iterator<Cell> cellIterator = row.cellIterator();
+                        while (cellIterator.hasNext()) {
+                            Cell c = cellIterator.next();
+                            c.setCellStyle(style);
+                        }
                     }
                 }
             }
@@ -283,15 +322,16 @@ public class Main {
         }
         File dir = new File(input);
         File[] directoryListing = dir.listFiles();
+        pool = Executors.newFixedThreadPool(4);
         if (directoryListing != null) {
             for (File child : directoryListing) {
                 if (child.getName().startsWith("chr")) {
-                    new Thread() {
+                    Runnable r = new Runnable() {
                         public void run() {
                             parseJunctions(new String[]{child.getAbsolutePath(), output, child.getName()});
                         }
-                    }.start();
-
+                    };
+                    pool.execute(r);
                 }
             }
         }
@@ -311,20 +351,19 @@ public class Main {
         int commonRegionStart = -1;
         int commonRegionEnd = -1;
         HashMap<String, Sample> samplesList = new HashMap<>();
+        String clustersFile = "clusters" + File.separator + chrFile;
+
         //Count number of lines in input to report progress
-        long lineCount = 0;
-        try {
-            Path path = Paths.get(input);
-            lineCount = Files.lines(path).count();
-        } catch (Exception e) {
-        }
-        System.out.println("Number of lines in input file(" + input + "): " + lineCount);
-        int pr = -1;
-        int l = 0;
-        int cs = 0;
-        int cl = 0;
-        StringBuilder sb = new StringBuilder();
-        ArrayList<Double> sizes = new ArrayList<>();
+        //long lineCount = 0;
+        //try {
+        //Path path = Paths.get(input);
+        //lineCount = Files.lines(path).count();
+        // } catch (Exception e) {
+        // }
+        //System.out.println("Number of lines in input file(" + input + "): " + lineCount);
+        //int pr = -1;
+        //int l = 0;
+        //int cs = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(input))) {
             for (String line; (line = br.readLine()) != null; ) {
                 try {
@@ -335,12 +374,6 @@ public class Main {
                     int currentLineEnd = Integer.parseInt(values[3]);
                     String[] samples = values[11].split(",");
                     String junctionID = currentLineChr.substring(3) + ":" + currentLineStart + ":" + currentLineEnd;
-                    sb.append(currentLineStart);
-                    sb.append("    ");
-                    sb.append(currentLineEnd);
-                    sb.append("    ");
-                    sb.append("\n");
-
                     if (clusterStart == -1) { //case when this is the first ever line read
                         clusterStart = currentLineStart;
                         clusterEnd = currentLineEnd;
@@ -348,60 +381,29 @@ public class Main {
                         commonRegionEnd = currentLineEnd;
                         chr = currentLineChr;
                         parseSamples(junctionID, samplesList, samples);
-                        cl = l;
                     } else if (!(commonRegionEnd <= currentLineStart)) { //case when the read can be continued
-                        if (parseSamples(junctionID, samplesList, samples)) {
-                            //extending end
-                            if (currentLineEnd > clusterEnd) {
-                                clusterEnd = currentLineEnd;
-                            }
-                            if (commonRegionStart <= currentLineStart) {
-                                commonRegionStart = currentLineStart;
-                            }
-                            if (commonRegionEnd >= currentLineEnd) {
-                                commonRegionEnd = currentLineEnd;
-                            }
-                            sb.append("----------------------------------------------------------------------------");
-                            sb.append("\n");
-                            sb.append("line " + l);
-                            sb.append("\n");
-                            sb.append("cluster size " + cs);
-                            sb.append("\n");
-                            sb.append("----------------------------------------------------------------------------");
-                            sb.append("\n");
-                            cs++;
-                            if (cs > maxCS) {
-                                maxCS = cs;
-                                if (maxCS % 1000 == 0) {
-                                    //  System.out.println("Max Cluster Size: " + cs);
-                                }
-                            }
-                            if (cs == 1000) {
-                                //System.out.println("--------------------------------------" + l + " -- " +input);
-                            }
+                        parseSamples(junctionID, samplesList, samples);
+                        //extending end
+                        if (currentLineEnd > clusterEnd) {
+                            clusterEnd = currentLineEnd;
                         }
+                        if (commonRegionStart < currentLineStart) {
+                            commonRegionStart = currentLineStart;
+                        }
+                        if (commonRegionEnd > currentLineEnd) {
+                            commonRegionEnd = currentLineEnd;
+                        }
+
                     } else { //case when read is stopped and new one is started
-                        cn++;
-                        // double avg = 0;
-                        // for (Sample s : samplesList.values()) {
-                        //     avg += s.junctions.size();
-                        //  }
-                        //avg /=samplesList.values().size();
-                        //  sizes.add(avg);
-                        if (cn % 1000 == 0) {
-                            // System.out.println(cn + "clusters added");
-                        }
-                        String clusterID = chr.substring(3) + ":" + commonRegionStart + ":" + commonRegionEnd;
-                        saveSamples(clusterID, samplesList, output);
-                        if (!cList.contains(clusterID)) {
-                            cList.add(clusterID);
-                            try (PrintWriter out = new PrintWriter(new BufferedWriter
-                                    (new FileWriter("clusters" + File.separator + chrFile, true)))) {
-                                out.println(clusterID);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
+                        StringBuilder clusterID = new StringBuilder();
+                        clusterID.append(chr.substring(3));
+                        clusterID.append(":");
+                        clusterID.append(commonRegionStart);
+                        clusterID.append(":");
+                        clusterID.append(commonRegionEnd);
+                        saveSamples(clusterID.toString(), samplesList, output);
+                        IO.writeToFile(clusterID.toString(), clustersFile);
+
                         samplesList.clear();
                         parseSamples(junctionID, samplesList, samples);
                         clusterStart = currentLineStart;
@@ -409,25 +411,30 @@ public class Main {
                         commonRegionStart = currentLineStart;
                         commonRegionEnd = currentLineEnd;
                         chr = currentLineChr;
-                        cs = 0;
-                        cl = l;
+                        //cs = 0;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                l++;
-                int r = (int) Math.round(((double) l / lineCount) * 100);
-                if (r % 10 == 0 && pr != r) {
-                    System.out.println(r + "%   Complete for " + input);
-                    pr = r;
-                }
+                //l++;
+                //int r = (int) Math.round(((double) l / lineCount) * 100);
+                //if (r % 10 == 0 && pr != r) {
+                //    System.out.println(r + "%   Complete for " + input);
+                //    pr = r;
+                //}
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         //to deal with file ending
-        String clusterID = chr.substring(3) + ":" + commonRegionStart + ":" + commonRegionEnd;
-        saveSamples(clusterID, samplesList, output);
+        StringBuilder clusterID = new StringBuilder();
+        clusterID.append(chr.substring(3));
+        clusterID.append(":");
+        clusterID.append(commonRegionStart);
+        clusterID.append(":");
+        clusterID.append(commonRegionEnd);
+        saveSamples(clusterID.toString(), samplesList, output);
+        IO.writeToFile(clusterID.toString(), clustersFile);
         cn++;
         //double avg = 0;
         //for (Sample s : samplesList.values()) {
@@ -436,35 +443,43 @@ public class Main {
         //avg /=samplesList.values().size();
         //sizes.add(avg);
         //System.out.println(cn + "clusters added");
-        //System.out.println("Max Cluster Size: " + maxCS);
-        //Collections.sort(sizes);
-        //Double average = sizes.stream().mapToDouble(val -> val).average().orElse(0.0);
-        // System.out.println("Average samples: " + average);
-        // System.out.println("Median samples: " + sizes.get(sizes.size() / 2));
-        System.out.println();
-    }
-
-    private static void saveSamples(String clusterID, HashMap<String, Sample> samplesList, String output) {
-        for (Sample sample : samplesList.values()) {
-            try (PrintWriter out = new PrintWriter(new BufferedWriter
-                    (new FileWriter(output + File.separator + sample.id, true)))) {
-                out.println(clusterID + "\t" + sample.toString() + "\t" + sample.count);
-            } catch (Exception e) {
-                e.printStackTrace();
+        System.out.println(chrFile);
+        synchronized (Main.class) {
+            tchr48++;
+            if (tchr48 == 48) {
+                System.out.println("Finished parsing the junctions folder.");
+                pool.shutdown();
+                System.out.println("Flushing");
+                IO.flush();
+                System.out.println("All done!");
+                System.exit(0);
             }
         }
     }
 
-    private static boolean parseSamples(String jid, HashMap<String, Sample> samplesList, String[] samples) {
-        boolean ret = false;
+    private static void saveSamples(String clusterID, HashMap<String, Sample> samplesList, String output) {
+        for (Sample sample : samplesList.values()) {
+            StringBuilder line = new StringBuilder();
+            line.append(clusterID);
+            line.append("\t");
+            line.append(sample.toString());
+            line.append("\t");
+            line.append(sample.count);
+            line.append("\n");
+            StringBuilder file = new StringBuilder();
+            file.append(output);
+            file.append(File.separator);
+            file.append(sample.id);
+            IO.writeToFile(line.toString(), file.toString());
+        }
+    }
+
+    private static void parseSamples(String jid, HashMap<String, Sample> samplesList, String[] samples) {
         for (String sample : samples) {
             if (sample.trim().length() <= 0) {
                 continue;
             }
             int count = Integer.parseInt(sample.split(":")[1]);
-            if (count < minCount) {
-                continue;
-            }
             String id = sample.split(":")[0];
             Sample s;
             if (samplesList.containsKey(id)) {
@@ -474,10 +489,30 @@ public class Main {
                 s = new Sample(id, count);
                 samplesList.put(id, s);
             }
-            s.junctions.add(jid + ":" + count);
-            ret = true;
+            StringBuilder junctionID = new StringBuilder();
+            junctionID.append(jid);
+            junctionID.append(":");
+            junctionID.append(count);
+            s.junctions.add(junctionID.toString());
         }
-        return ret;
+    }
+
+    public static void parseROH(String input) {
+        //parse the roh.txt file
+        //map chromosomes to regions
+        try (BufferedReader br = new BufferedReader(new FileReader(input))) {
+            for (String line; (line = br.readLine()) != null; ) {
+                try {
+                    String[] values = line.split(":");
+                    int[] v = parseIntArray(values[1].split("-"));
+                    ROHMap.get(values[0]).add(new Region(v[0], v[1]));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void step1(String[] args) {
@@ -486,30 +521,6 @@ public class Main {
         String input2 = args[1];
         String outputMapping = args[2];
         String outputSelectedGenes = args[3];
-        //parse the roh.txt file
-        //map chromosomes to regions
-        HashMap<String, ArrayList<int[]>> mapping = new HashMap<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(input1))) {
-            for (String line; (line = br.readLine()) != null; ) {
-                try {
-                    String[] values = line.split(":");
-                    if (mapping.containsKey(values[0])) {
-                        //new chromosome case
-                        mapping.get(values[0]).add(parseIntArray(values[1].split("-")));
-
-                    } else {
-                        //new region for existing chromosome
-                        ArrayList<int[]> pair = new ArrayList<>();
-                        pair.add(parseIntArray(values[1].split("-")));
-                        mapping.put(values[0], pair);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         //parse the gtf file
         StringBuilder IDMappingSB = new StringBuilder();
@@ -547,7 +558,7 @@ public class Main {
                         //record the protein coding genes
                         if (infoMap.get("gene_type").equals("protein_coding")) {
                             //which intersect regions from roh
-                            if (intersects(new int[]{Integer.parseInt(values[3]), Integer.parseInt(values[4])}, mapping.get(values[0]))) {
+                            if (intersects(new int[]{Integer.parseInt(values[3]), Integer.parseInt(values[4])}, ROHMap.get(values[0]))) {
                                 if (!selectedGenes.contains(eID)) {
                                     selectedGenesSB.append(eID);
                                     selectedGenesSB.append(System.lineSeparator());
@@ -757,12 +768,12 @@ public class Main {
         }
     }
 
-    private static boolean intersects(int[] geneLoc, ArrayList<int[]> a) {
+    private static boolean intersects(int[] geneLoc, ArrayList<Region> a) {
         if (a == null) {
             return false;
         }
-        for (int[] bounds : a) {
-            if ((bounds[0] <= geneLoc[0] && geneLoc[0] <= bounds[1]) || (bounds[0] <= geneLoc[1] && geneLoc[1] <= bounds[1])) {
+        for (Region bounds : a) {
+            if ((bounds.start <= geneLoc[0] && geneLoc[0] <= bounds.end) || (bounds.start <= geneLoc[1] && geneLoc[1] <= bounds.end)) {
                 return true;
             }
         }
@@ -870,5 +881,118 @@ public class Main {
             return false;
         }
         return true;
+    }
+
+    public static void parseJunctionsFolder2(String[] args) {
+        String input = args[0];
+        String output = args[1];
+        File directory = new File(output);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+        File dir = new File(input);
+        File[] directoryListing = dir.listFiles();
+        ExecutorService pool = Executors.newFixedThreadPool(4);
+        if (directoryListing != null) {
+            for (File child : directoryListing) {
+                if (child.getName().startsWith("chr")) {
+                    Runnable r = new Runnable() {
+                        public void run() {
+                            parseJunctions2(new String[]{child.getAbsolutePath(), output, child.getName()});
+                        }
+                    };
+                    pool.execute(r);
+                }
+            }
+        }
+    }
+
+    public static void parseJunctions2(String[] args) {
+        String input = args[0];
+        String output = args[1];
+        String chrFile = args[2];
+        String mode = args[3];
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(input))) {
+            sb.append(br.readLine());
+            sb.append("\n");
+            for (String line; (line = br.readLine()) != null; ) {
+                try {
+                    //get values from a line
+                    String[] values = line.split("\t");
+                    int s = Integer.parseInt(values[0]);
+                    int e = Integer.parseInt(values[1]);
+                    Region r = new Region(s, e);
+                    if (mode.equals("0")) {
+                        if (r.isContainedIn(ROHMap.get(chrFile))) {
+                            sb.append(line);
+                            sb.append("\n");
+                        }
+                    } else if (mode.equals("1")) {
+                        if (r.isInRange(unannotatedVariants.get(chrFile), 5000)) {
+                            sb.append(line);
+                            sb.append("\n");
+                        }
+                    } else if (mode.equals("2")) {
+                        if (r.isInRange(alleleFrequency.get(chrFile), 5000)) {
+                            sb.append(line);
+                            sb.append("\n");
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(chrFile + " - " + sb.toString().split("\n").length);
+        try (PrintWriter out = new PrintWriter(output)) {
+            out.print(sb.toString().trim());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void parseExcelForFiltering(String args[]) {
+        String excelFile = args[0];
+        //try to parse the excel file
+        try {
+            Workbook wb = WorkbookFactory.create(new File(excelFile));
+            Sheet sheet = wb.getSheetAt(0);
+            Row row;
+            int rows = sheet.getPhysicalNumberOfRows();
+            for (int r = 1; r < rows; r++) {
+                row = sheet.getRow(r);
+                if (row != null) {
+                    String er = "";
+                    if (row.getCell(18) != null) {
+                        er = row.getCell(18).getStringCellValue();
+                    }
+                    if (!er.equals("error")) {
+                        int start = (int) row.getCell(1).getNumericCellValue();
+                        String chr = row.getCell(0).getStringCellValue();
+                        chr = chr.replaceAll("chr0", "chr");
+                        String dbSNP = row.getCell(9).getStringCellValue();
+                        String dbSNP131 = row.getCell(10).getStringCellValue();
+                        String dbSNP132 = row.getCell(15).getStringCellValue();
+                        String genomes1000 = row.getCell(16).getStringCellValue();
+                        double allele = 0;
+                        if (row.getCell(17) != null) {
+                            allele = Double.parseDouble(row.getCell(17).getStringCellValue());
+                        }
+                        //if the conditions is satisfied the gene is considered
+                        if (dbSNP.equals(".") && dbSNP131.equals(".") && dbSNP132.equals(".") && genomes1000.equals(".")) {
+                            unannotatedVariants.get(chr).add(start);
+                        }
+                        if (allele < 0.001) {
+                            alleleFrequency.get(chr).add(start);
+                        }
+                    }
+                }
+            }
+        } catch (Exception ioe) {
+            ioe.printStackTrace();
+        }
     }
 }
