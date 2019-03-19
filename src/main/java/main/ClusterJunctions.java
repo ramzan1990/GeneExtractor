@@ -94,8 +94,12 @@ public class ClusterJunctions {
                         clusterID.append(commonRegionStart);
                         clusterID.append(":");
                         clusterID.append(commonRegionEnd);
+                        clusterID.append("\t");
+                        clusterID.append(clusterStart);
+                        clusterID.append("\t");
+                        clusterID.append(clusterEnd);
                         saveSamples(clusterID.toString(), samplesList, output);
-                        IO.writeToFile(clusterID.toString(), clustersFile);
+                        IO.writeToFile(clusterID.toString() + "\n", clustersFile);
 
                         samplesList.clear();
                         parseSamples(junctionID, samplesList, samples);
@@ -120,7 +124,7 @@ public class ClusterJunctions {
         clusterID.append(":");
         clusterID.append(commonRegionEnd);
         saveSamples(clusterID.toString(), samplesList, output);
-        IO.writeToFile(clusterID.toString(), clustersFile);
+        IO.writeToFile(clusterID.toString() + "\n", clustersFile);
         System.out.println(chrFile);
         synchronized (LegacyCode.class) {
             tchr48++;

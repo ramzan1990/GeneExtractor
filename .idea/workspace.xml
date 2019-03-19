@@ -2,25 +2,23 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="ge" />
+      <artifact name="cluster" />
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="df366088-f55c-40f1-8f8a-d6fef2156e1d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/skin_rin8/chr13+.tsv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/skin_rin8/chr13-.tsv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/ClusterJunctions.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/Common.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/ConvertToHG38.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/Filtering.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/LegacyCode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/main/SplitJunctionsInto48.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/cluster.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/filter.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Cluster_META/META-INF/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/METAS/Filtering_META/META-INF/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Split_META/META-INF/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/main/HTMLExtractor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/ge.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/split.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/11DG0268_SNP_Indel_ANNO.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/META-INF/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/META-INF/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/main/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/main/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/main/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/main/ClusterJunctions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/main/ClusterJunctions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/util/Common.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/Common.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/util/IO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/IO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/main/Main.class" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -42,23 +40,25 @@
     <session id="-142920792">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="49" />
-          <entry key="project.open.time.0" value="12" />
-          <entry key="project.open.time.1" value="9" />
-          <entry key="project.open.time.5" value="11" />
-          <entry key="project.open.time.6" value="13" />
+          <entry key="project.closed" value="57" />
+          <entry key="project.open.time.0" value="14" />
+          <entry key="project.open.time.1" value="12" />
+          <entry key="project.open.time.4" value="1" />
+          <entry key="project.open.time.5" value="12" />
+          <entry key="project.open.time.6" value="15" />
           <entry key="project.open.time.7" value="6" />
           <entry key="project.open.time.8" value="2" />
-          <entry key="project.opened" value="53" />
+          <entry key="project.opened" value="62" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
+          <entry key="MF" value="1" />
           <entry key="chain" value="1" />
           <entry key="class" value="8" />
           <entry key="csv" value="10" />
           <entry key="gtf_withproteinids" value="2" />
-          <entry key="java" value="16" />
+          <entry key="java" value="26" />
           <entry key="py" value="2" />
           <entry key="tsv" value="9" />
           <entry key="txt" value="10" />
@@ -69,7 +69,8 @@
         <counts>
           <entry key="CLASS" value="8" />
           <entry key="CSV" value="10" />
-          <entry key="JAVA" value="16" />
+          <entry key="JAVA" value="26" />
+          <entry key="Manifest" value="1" />
           <entry key="PLAIN_TEXT" value="15" />
           <entry key="TSV" value="9" />
           <entry key="XML" value="1" />
@@ -79,16 +80,16 @@
         <counts>
           <entry key="class" value="2" />
           <entry key="dummy" value="15" />
-          <entry key="java" value="13881" />
-          <entry key="txt" value="30" />
+          <entry key="java" value="14431" />
+          <entry key="txt" value="32" />
           <entry key="xml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CLASS" value="2" />
-          <entry key="JAVA" value="13881" />
-          <entry key="PLAIN_TEXT" value="45" />
+          <entry key="JAVA" value="14431" />
+          <entry key="PLAIN_TEXT" value="47" />
           <entry key="XML" value="1" />
         </counts>
       </usages-collector>
@@ -99,17 +100,29 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/main/LegacyCode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
+            <state relative-caret-position="221">
+              <caret line="21" column="25" selection-start-line="21" selection-start-column="25" selection-end-line="21" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/main/ClusterJunctions.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="838">
+              <caret line="117" column="9" selection-start-line="59" selection-start-column="8" selection-end-line="117" selection-end-column="9" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/main/ClusterJunctions.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/main/HTMLExtractor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="172" column="5" lean-forward="true" selection-start-line="172" selection-start-column="5" selection-end-line="172" selection-end-column="5" />
+            <state relative-caret-position="595">
+              <caret line="35" column="33" lean-forward="true" selection-start-line="35" selection-start-column="33" selection-end-line="35" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -120,8 +133,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/main/Filtering.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="202" selection-start-line="202" selection-end-line="218" selection-end-column="5" />
+            <state relative-caret-position="374">
+              <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -130,13 +143,12 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/main/Common.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/util/Common.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+            <state relative-caret-position="459">
+              <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
               <folding>
-                <element signature="e#119#120#0" expanded="true" />
-                <element signature="e#194#195#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -145,8 +157,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/main/ConvertToHG38.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="25" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
+            <state relative-caret-position="527">
+              <caret line="55" column="13" lean-forward="true" selection-start-line="50" selection-start-column="11" selection-end-line="55" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -157,8 +169,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/main/SplitJunctionsInto48.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="406">
-              <caret line="27" column="36" selection-start-line="27" selection-start-column="36" selection-end-line="27" selection-end-column="36" />
+            <state relative-caret-position="527">
+              <caret line="31" column="9" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -167,28 +179,28 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/main/Sample.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/util/Sample.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="35" column="38" selection-start-line="35" selection-start-column="38" selection-end-line="35" selection-end-column="38" />
+            <state relative-caret-position="68">
+              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/main/IO.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/util/IO.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="31" column="52" selection-start-line="31" selection-start-column="52" selection-end-line="31" selection-end-column="52" />
+            <state relative-caret-position="136">
+              <caret line="14" column="59" selection-start-line="14" selection-start-column="55" selection-end-line="14" selection-end-column="59" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/main/Region.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/util/Region.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
+            <state relative-caret-position="68">
+              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -214,6 +226,8 @@
       <find>conver</find>
       <find>parseIntArray</find>
       <find>parseROH</find>
+      <find>drange</find>
+      <find>writeToFile</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -225,15 +239,19 @@
         <option value="$PROJECT_DIR$/python/p.py" />
         <option value="$PROJECT_DIR$/src/main/java/main/Sample.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/main/Region.java" />
         <option value="$PROJECT_DIR$/src/main/java/main/IO.java" />
         <option value="$PROJECT_DIR$/src/main/java/main/splitJunctionsInto48.java" />
         <option value="$PROJECT_DIR$/src/main/java/main/Common.java" />
         <option value="$PROJECT_DIR$/src/main/java/main/ConvertToHG38.java" />
-        <option value="$PROJECT_DIR$/src/main/java/main/ClusterJunctions.java" />
         <option value="$PROJECT_DIR$/src/main/java/main/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/main/Filtering.java" />
         <option value="$PROJECT_DIR$/src/main/java/main/LegacyCode.java" />
+        <option value="$PROJECT_DIR$/src/main/java/main/Region.java" />
+        <option value="$PROJECT_DIR$/src/main/java/util/Sample.java" />
+        <option value="$PROJECT_DIR$/src/main/java/util/IO.java" />
+        <option value="$PROJECT_DIR$/src/main/java/main/ClusterJunctions.java" />
+        <option value="$PROJECT_DIR$/src/main/java/util/Common.java" />
+        <option value="$PROJECT_DIR$/src/main/java/main/HTMLExtractor.java" />
       </list>
     </option>
   </component>
@@ -262,13 +280,17 @@
     <panes>
       <pane id="AndroidView" />
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="GeneExtractor" type="b2602c69:ProjectViewProjectNode" />
               <item name="GeneExtractor" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="GeneExtractor" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GeneExtractor" type="462c0819:PsiDirectoryNode" />
+              <item name="out" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="GeneExtractor" type="b2602c69:ProjectViewProjectNode" />
@@ -301,15 +323,24 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="GeneExtractor" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GeneExtractor" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1543274847066" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/genome-coordinates-converter.jar!/" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553022812940" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/METAS/Filtering_META" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -341,7 +372,21 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.HTMLExtractor">
+    <configuration name="HTMLExtractor" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="main.HTMLExtractor" />
+      <module name="GeneExtractor" />
+      <option name="PROGRAM_PARAMETERS" value="trap-snv-info.txt trap-snv-info-score.txt" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="main.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="LegacyCode" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="main.LegacyCode" />
       <module name="GeneExtractor" />
@@ -356,8 +401,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.LegacyCode" />
+      <item itemvalue="Application.HTMLExtractor" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.HTMLExtractor" />
         <item itemvalue="Application.LegacyCode" />
       </list>
     </recent_temporary>
@@ -485,14 +535,21 @@
       <option name="project" value="LOCAL" />
       <updated>1542398264353</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="m 10">
+      <created>1543275049388</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1543275049389</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17537314" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19189766" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Nl-Palette" order="2" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -502,7 +559,7 @@
       <window_info id="Capture Tool" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" visible="true" weight="0.32936078" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32936078" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32936078" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.22751896" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -545,7 +602,8 @@
     <MESSAGE value="m 7" />
     <MESSAGE value="m 8" />
     <MESSAGE value="m 9" />
-    <option name="LAST_COMMIT_MESSAGE" value="m 9" />
+    <MESSAGE value="m 10" />
+    <option name="LAST_COMMIT_MESSAGE" value="m 10" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -565,6 +623,26 @@
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>f.indexOf(&quot;&lt;td&gt;&quot; + g + &quot;&lt;/td&gt;&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>trapData.get(i)[1] + &quot;.html&quot;</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>trapData.get(i)[1]</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>line.split(&quot;\t&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>ROHMap.get(chrFile)</expression-string>
         <language-id>JAVA</language-id>
@@ -587,26 +665,6 @@
       </expression>
       <expression>
         <expression-string>row.getCell(17).getNumericCellValue()</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>row.getCell(17).getStringCellValue()</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>row.getCell(17)</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>ROHMap.keySet.contains(&quot;chr1&quot;)</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>ROHMap.get(values[0])</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
@@ -703,69 +761,71 @@
     <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.base/java/lang/String.java" />
     <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.base/java/lang/StringBuilder.java" />
     <entry file="file://$PROJECT_DIR$/filtering/ch13+_2.tsv" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/main/IO.java">
+    <entry file="file://$PROJECT_DIR$/METAS/Filtering_META/META-INF/MANIFEST.MF">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/main/LegacyCode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="31" column="52" selection-start-line="31" selection-start-column="52" selection-end-line="31" selection-end-column="52" />
+        <state relative-caret-position="221">
+          <caret line="21" column="25" selection-start-line="21" selection-start-column="25" selection-end-line="21" selection-end-column="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/main/Sample.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/util/Common.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="35" column="38" selection-start-line="35" selection-start-column="38" selection-end-line="35" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/main/Common.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        <state relative-caret-position="459">
+          <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
           <folding>
-            <element signature="e#119#120#0" expanded="true" />
-            <element signature="e#194#195#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/main/SplitJunctionsInto48.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="31" column="9" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/util/Sample.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/util/IO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="14" column="59" selection-start-line="14" selection-start-column="55" selection-end-line="14" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/util/Region.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/main/Filtering.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/main/ConvertToHG38.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="25" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/main/Region.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/main/LegacyCode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/main/SplitJunctionsInto48.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
-          <caret line="27" column="36" selection-start-line="27" selection-start-column="36" selection-end-line="27" selection-end-column="36" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/main/Filtering.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="202" selection-start-line="202" selection-end-line="218" selection-end-column="5" />
+        <state relative-caret-position="527">
+          <caret line="55" column="13" lean-forward="true" selection-start-line="50" selection-start-column="11" selection-end-line="55" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -774,8 +834,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/main/ClusterJunctions.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="172" column="5" lean-forward="true" selection-start-line="172" selection-start-column="5" selection-end-line="172" selection-end-column="5" />
+        <state relative-caret-position="838">
+          <caret line="117" column="9" selection-start-line="59" selection-start-column="8" selection-end-line="117" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/main/HTMLExtractor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="35" column="33" lean-forward="true" selection-start-line="35" selection-start-column="33" selection-end-line="35" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -788,7 +858,7 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
-          <last-edited>ge</last-edited>
+          <last-edited>split</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
