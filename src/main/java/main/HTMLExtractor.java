@@ -1,10 +1,12 @@
 package main;
 
+import org.apache.commons.lang3.StringUtils;
 import util.Common;
 import util.IO;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class HTMLExtractor {
     public static void main(String[] a) {
@@ -26,13 +28,22 @@ public class HTMLExtractor {
         for (int i = 0; i < trapData.size(); i++) {
             String score = "NA";
             String file = "trap_data" + File.separator + trapData.get(i)[1].trim() + ".html";
-            if(new File(file).exists()) {
+            if (new File(file).exists()) {
                 String f = Common.readFile(file);
                 String g = trapData.get(i)[2];
-                String s = f.replaceAll(".*<td>" + g + "</td>|</td>.*", "");
-                s = s.substring(s.indexOf("<td>") + "<td>".length());
-                if (Common.isNumeric(s)) {
-                    score = s;
+                String s[] = StringUtils.substringsBetween(f, "<tr class=\"text-center\">", "</tr>");
+                if (s != null) {
+                    for (int j = 0; j < s.length; j++) {
+                        String v[] = s[j].split("<td>");
+                        String pg = v[v.length - 2].replaceAll("</td>", "").trim();
+                        if (g.contains(pg) || pg.contains(g) || s.length == 1) {
+                            String sc = v[v.length - 1].replaceAll("</td>", "").trim();
+                            if (Common.isNumeric(sc)) {
+                                score = sc;
+                            }
+                            break;
+                        }
+                    }
                 }
             }
             sb.append(trapData.get(i)[0]);
